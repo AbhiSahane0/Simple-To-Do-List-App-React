@@ -1,25 +1,46 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Heading from './component/Heading';
+import List from './component/List';
 
 function App() {
+  const [inputText, setInputText] = useState('');
+  const [itemArray, setItemArray] = useState([]);
+
+  const [crossOver, setCrossOver] = useState(false);
+
+  function handleChange(event) {
+    const note = event.target.value;
+    setInputText(note);
+  }
+
+  function handleButtonClick() {
+    setItemArray(preValue => [...preValue, inputText]);
+    setInputText('');
+  }
+
+  function alert() {
+    setCrossOver(preValue => !preValue);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="note-container">
+        <Heading />
+        <input
+          type="text"
+          placeholder="Enter task"
+          onChange={handleChange}
+          value={inputText}
+        />
+        <button onClick={handleButtonClick}>Add</button>
+        <ul>
+          {itemArray.map((item, id) => (
+            <List id={id} item={item} />
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
-
 export default App;
